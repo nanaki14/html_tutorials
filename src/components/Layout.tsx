@@ -6,6 +6,9 @@ const navItems = [
 	{ to: "/inline", label: "インライン要素" },
 	{ to: "/block-vs-inline", label: "比較" },
 	{ to: "/inline-block", label: "inline-block" },
+	{ to: "/sizing", label: "width/height" },
+	{ to: "/margin-padding-percent", label: "margin/padding %" },
+	{ to: "/absolute", label: "absolute" },
 ];
 
 export function Layout() {

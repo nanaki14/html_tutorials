@@ -13,6 +13,7 @@ export function Home() {
 				</p>
 			</div>
 
+			<h3 className="font-bold text-gray-500 text-sm">基本</h3>
 			<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 				<Link
 					to="/block"
@@ -56,6 +57,46 @@ export function Home() {
 					</h3>
 					<p className="text-gray-600 text-sm">
 						両方の特性を併せ持つ display: inline-block を確認します。
+					</p>
+				</Link>
+			</div>
+
+			<h3 className="font-bold text-gray-500 text-sm">サイズ計算</h3>
+			<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+				<Link
+					to="/sizing"
+					className="rounded-lg border-2 border-cyan-200 bg-white p-6 transition-shadow hover:shadow-md"
+				>
+					<h3 className="mb-2 font-bold text-cyan-700 text-xl">
+						width / height の計算基準
+					</h3>
+					<p className="text-gray-600 text-sm">
+						% 指定の基準、box-sizing の違い、各単位の計算基準を確認します。
+					</p>
+				</Link>
+
+				<Link
+					to="/margin-padding-percent"
+					className="rounded-lg border-2 border-emerald-200 bg-white p-6 transition-shadow hover:shadow-md"
+				>
+					<h3 className="mb-2 font-bold text-emerald-700 text-xl">
+						margin / padding の %
+					</h3>
+					<p className="text-gray-600 text-sm">
+						上下左右すべて「親の幅」が基準になる理由と応用テクニックを解説します。
+					</p>
+				</Link>
+
+				<Link
+					to="/absolute"
+					className="rounded-lg border-2 border-rose-200 bg-white p-6 transition-shadow hover:shadow-md"
+				>
+					<h3 className="mb-2 font-bold text-rose-700 text-xl">
+						position: absolute
+					</h3>
+					<p className="text-gray-600 text-sm">
+						absolute 要素のブロック化と、top/right/bottom/left
+						によるサイズ決定を確認します。
 					</p>
 				</Link>
 			</div>
