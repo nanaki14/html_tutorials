@@ -299,6 +299,103 @@ div {
 </div>`}
 			/>
 
+			{/* ---- absolute は子の height: % の基準になる ---- */}
+			<DemoBox
+				title="absolute 要素は子要素の height: % の基準になる"
+				description="position: absolute の要素はサイズが確定しているため、height: auto の static 要素と違い、直下の子要素で height: % が有効に機能します。"
+			>
+				<div className="flex gap-6">
+					<div>
+						<p className="mb-1 font-semibold text-gray-700 text-xs">
+							static な親 → height: % が効かない
+						</p>
+						<div
+							style={{
+								width: "180px",
+								background: "#e5e7eb",
+								border: "2px solid #9ca3af",
+								padding: "4px",
+							}}
+						>
+							<p className="mb-1 text-gray-500 text-xs">親: height 未指定（auto）</p>
+							<div
+								style={{
+									height: "50%",
+									background: "#fca5a5",
+									padding: "6px",
+									fontSize: "12px",
+								}}
+							>
+								height: 50% → 効かない
+							</div>
+						</div>
+					</div>
+					<div>
+						<p className="mb-1 font-semibold text-gray-700 text-xs">
+							absolute な親 → height: % が有効
+						</p>
+						<div
+							style={{
+								position: "relative",
+								width: "180px",
+								height: "120px",
+								background: "#e5e7eb",
+								border: "2px solid #9ca3af",
+							}}
+						>
+							<p className="absolute text-gray-500 text-xs" style={{ top: "4px", left: "4px" }}>
+								親: position: relative / height: 120px
+							</p>
+							<div
+								style={{
+									position: "absolute",
+									top: "30px",
+									left: "4px",
+									right: "4px",
+									bottom: "4px",
+									background: "#dbeafe",
+									border: "2px dashed #3b82f6",
+									padding: "4px",
+									fontSize: "11px",
+								}}
+							>
+								<p className="text-blue-600 text-xs">absolute / top:30px bottom:4px</p>
+								<p className="text-blue-500 text-xs">→ 高さが確定している</p>
+								<div
+									style={{
+										height: "50%",
+										background: "#86efac",
+										padding: "4px",
+										fontSize: "11px",
+										marginTop: "4px",
+									}}
+								>
+									height: 50% → 有効
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</DemoBox>
+			<CodeBlock
+				code={`/* static な親では height: % は効かない */
+.parent { /* height 未指定 = auto */ }
+.child  { height: 50%; } /* → 無視される */
+
+/* absolute な親では height が確定するため % が有効 */
+.parent {
+  position: relative;
+  height: 200px; /* 明示的に指定 */
+}
+.absolute-child {
+  position: absolute;
+  top: 0; bottom: 0; /* top + bottom でも高さが確定する */
+}
+.grandchild {
+  height: 50%; /* → absolute-child の高さの 50% = 有効 */
+}`}
+			/>
+
 			{/* ---- まとめ ---- */}
 			<div className="overflow-x-auto rounded-lg bg-white p-6 shadow-sm">
 				<h3 className="mb-4 font-bold text-lg">

@@ -9,6 +9,11 @@ const navItems = [
 	{ to: "/sizing", label: "width/height" },
 	{ to: "/margin-padding-percent", label: "margin/padding %" },
 	{ to: "/absolute", label: "absolute" },
+	{ to: "/sticky", label: "sticky" },
+	{ to: "/viewport-units", label: "vw/vh/svh/dvh" },
+	{ to: "/flex", label: "Flexbox" },
+	{ to: "/grid", label: "Grid" },
+	{ to: "/container-query", label: "Container Query" },
 ];
 
 export function Layout() {
@@ -17,34 +22,37 @@ export function Layout() {
 	return (
 		<div className="min-h-screen bg-gray-100">
 			<header className="bg-indigo-700 text-white shadow-md">
-				<div className="mx-auto max-w-5xl px-4 py-4">
+				<div className="px-4 py-4">
 					<h1 className="font-bold text-2xl">
 						HTML ブロック要素 &amp; インライン要素
 					</h1>
 				</div>
 			</header>
 
-			<nav className="border-gray-200 border-b bg-white shadow-sm">
-				<div className="mx-auto flex max-w-5xl gap-1 overflow-x-auto px-4 py-2">
-					{navItems.map((item) => (
-						<Link
-							key={item.to}
-							to={item.to}
-							className={`whitespace-nowrap rounded-md px-3 py-2 font-medium text-sm transition-colors ${
-								location.pathname === item.to
-									? "bg-indigo-100 text-indigo-700"
-									: "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-							}`}
-						>
-							{item.label}
-						</Link>
-					))}
-				</div>
-			</nav>
+			<div className="flex">
+				<nav className="sticky top-0 h-screen w-48 shrink-0 overflow-y-auto bg-white shadow-md">
+					<ul className="flex flex-col gap-1 p-3">
+						{navItems.map((item) => (
+							<li key={item.to}>
+								<Link
+									to={item.to}
+									className={`block rounded-md px-3 py-2 font-medium text-sm transition-colors ${
+										location.pathname === item.to
+											? "bg-indigo-100 text-indigo-700"
+											: "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+									}`}
+								>
+									{item.label}
+								</Link>
+							</li>
+						))}
+					</ul>
+				</nav>
 
-			<main className="mx-auto max-w-5xl px-4 py-8">
-				<Outlet />
-			</main>
+				<main className="flex-1 px-8 py-8">
+					<Outlet />
+				</main>
+			</div>
 		</div>
 	);
 }

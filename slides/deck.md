@@ -2,12 +2,12 @@
 marp: true
 theme: default
 paginate: true
-header: "HTML ブロック要素とインライン要素"
+header: "CSS レイアウト基礎"
 ---
 
-# HTML ブロック要素とインライン要素
+# CSS レイアウト基礎
 
-要素の表示モデルを理解しよう
+ブロック・インライン・Flex・Grid・position
 
 ---
 
@@ -20,7 +20,12 @@ header: "HTML ブロック要素とインライン要素"
 
 ### 代表的なブロック要素
 
-`<div>`, `<p>`, `<h1>`〜`<h6>`, `<ul>`, `<ol>`, `<li>`, `<section>`, `<article>`, `<header>`, `<footer>`
+- **見出し** — `h1`〜`h6`
+- **文章** — `p`、`blockquote`、`pre`
+- **汎用** — `div`、`figure`
+- **セクショニング** — `header`、`nav`、`main`、`section`、`article`、`aside`、`footer`
+- **リスト** — `ul`、`ol`、`li`、`dl`/`dt`/`dd`
+- **その他** — `table`、`form`、`hr`
 
 ---
 
@@ -33,60 +38,24 @@ header: "HTML ブロック要素とインライン要素"
 
 ### 代表的なインライン要素
 
-`<span>`, `<a>`, `<strong>`, `<em>`, `<code>`, `<img>`, `<br>`
+- **汎用・強調** — `span`、`strong`、`em`、`mark`、`small`、`b`、`i`、`s`
+- **リンク・参照** — `a`、`abbr`、`cite`、`time`
+- **コード** — `code`、`kbd`、`var`
+- **上付き・下付き** — `sup`、`sub`
+- **メディア・フォーム** — `img`、`input`、`button`、`label`
+- **改行** — `br`
 
 ---
 
-## ブロック要素の振る舞い
+## ブロック vs インライン 比較
 
-```html
-<div style="background: lightblue;">ブロック1</div>
-<div style="background: lightcoral;">ブロック2</div>
-<div style="background: lightgreen;">ブロック3</div>
-```
-
-→ 各 `<div>` は**横幅100%**を占め、**縦に積み重なる**
-
----
-
-## インライン要素の振る舞い
-
-```html
-<span style="background: lightblue;">インライン1</span>
-<span style="background: lightcoral;">インライン2</span>
-<span style="background: lightgreen;">インライン3</span>
-```
-
-→ 各 `<span>` は**コンテンツ幅だけ**を占め、**横に並ぶ**
-
----
-
-## width / height の違い
-
-| プロパティ | ブロック要素 | インライン要素 |
-|-----------|------------|--------------|
-| `width`   | ✅ 効く     | ❌ 効かない    |
-| `height`  | ✅ 効く     | ❌ 効かない    |
-
-インライン要素に幅・高さを指定しても**無視される**
-
----
-
-## margin の違い
-
-| 方向 | ブロック要素 | インライン要素 |
-|------|------------|--------------|
-| 上下 | ✅ 効く     | ❌ 効かない    |
-| 左右 | ✅ 効く     | ✅ 効く       |
-
----
-
-## padding の違い
-
-| 方向 | ブロック要素 | インライン要素 |
-|------|------------|--------------|
-| 上下 | ✅ 効く（レイアウトに影響） | ⚠️ 見た目は効くがレイアウトに影響しない |
-| 左右 | ✅ 効く     | ✅ 効く       |
+| 特性 | ブロック | インライン | inline-block |
+|------|---------|-----------|-------------|
+| 横幅 | 親要素100% | コンテンツ幅 | コンテンツ幅 |
+| 改行 | あり | なし | なし |
+| width/height | ✅ | ❌ | ✅ |
+| margin 上下 | ✅ | ❌ | ✅ |
+| margin 左右 | ✅ | ✅ | ✅ |
 
 ---
 
@@ -98,21 +67,9 @@ header: "HTML ブロック要素とインライン要素"
 - ブロックのように `width` / `height` / `margin` が**すべて効く**
 
 ```html
-<span style="display: inline-block; width: 100px; height: 50px;
-  background: lightblue;">ボックス</span>
+<span style="display: inline-block;
+  width: 100px; height: 50px;">ボックス</span>
 ```
-
----
-
-## まとめ
-
-| 特性 | ブロック | インライン | インラインブロック |
-|------|---------|-----------|-----------------|
-| 横幅 | 親要素100% | コンテンツ幅 | コンテンツ幅 |
-| 改行 | あり | なし | なし |
-| width/height | ✅ | ❌ | ✅ |
-| margin 上下 | ✅ | ❌ | ✅ |
-| margin 左右 | ✅ | ✅ | ✅ |
 
 ---
 
@@ -137,8 +94,7 @@ header: "HTML ブロック要素とインライン要素"
 
 ## height: % の基準
 
-- `height: 50%` → **親要素の height** の50%
-- ただし、親に**明示的な height** がないと**無視される**
+- `height: 50%` は**親に明示的な height** がないと無視される
 
 ```html
 <!-- ✅ 効く：親に height がある -->
@@ -248,28 +204,470 @@ div { box-sizing: border-box; width: 200px; padding: 20px; border: 5px solid; }
 
 ---
 
-## 4方向指定でサイズ確定
+## 4方向指定でサイズ確定 / 過剰指定のルール
 
 ```html
 <div style="position: relative; width: 400px; height: 200px;">
   <div style="position: absolute;
     top: 20px; right: 20px; bottom: 20px; left: 20px;">
-    <!-- width  = 400 - 20 - 20 = 360px -->
-    <!-- height = 200 - 20 - 20 = 160px -->
+    <!-- width = 360px / height = 160px -->
+  </div>
+</div>
+```
+
+| 指定 | 結果 |
+|------|------|
+| `left` + `right` + `width` | **right が無視**（LTR） |
+| `top` + `bottom` + `height` | **bottom が無視** |
+
+---
+
+## absolute は子要素の height: % の基準になる
+
+`position: absolute` の要素は高さが確定しているため、
+直下の子要素で `height: %` が**有効**になる
+
+```css
+/* ❌ static な親では height: % は効かない */
+.parent { /* height: auto */ }
+.child  { height: 50%; } /* 無視される */
+
+/* ✅ absolute な親では高さが確定している */
+.absolute-parent {
+  position: absolute;
+  top: 0; bottom: 0; /* ← 高さが確定 */
+}
+.child { height: 50%; } /* → 有効 */
+```
+
+---
+
+## containing block（基準となる親）
+
+absolute 要素の位置・サイズは **最も近い `position: relative/absolute/fixed/sticky` の祖先** が基準
+
+```html
+<div><!-- static: 基準にならない -->
+  <div style="position: relative;"><!-- ← containing block -->
+    <div><!-- static: 基準にならない -->
+      <div style="position: absolute; top: 10px; right: 10px;">
+        <!-- relative の div を基準に配置される -->
+      </div>
+    </div>
   </div>
 </div>
 ```
 
 ---
 
-## 過剰指定時のルール
+# position: sticky
 
-| 指定 | 結果 |
-|------|------|
-| `left` + `right`（width なし） | 幅 = 親幅 - left - right |
-| `left` + `right` + `width` | **right が無視**される（LTR） |
-| `top` + `bottom`（height なし） | 高さ = 親高さ - top - bottom |
-| `top` + `bottom` + `height` | **bottom が無視**される |
+---
+
+## sticky とは？
+
+**relative と fixed のハイブリッド**
+
+| position | 通常時 | スクロール時 | 親の外に出るか |
+|----------|--------|------------|-------------|
+| relative | フロー内 | 一緒に流れる | — |
+| fixed | ビューポート固定 | 常に固定 | 出る |
+| **sticky** | **フロー内** | **閾値で貼り付く** | **出ない** |
+
+---
+
+## sticky の基本構文
+
+```css
+.section-header {
+  position: sticky;
+  top: 0; /* ← 必須: この位置に達したら貼り付く */
+  z-index: 1;
+  background: white; /* 背景色がないと下が透ける */
+}
+```
+
+`top` / `bottom` / `left` / `right` のいずれかが**必須**
+
+---
+
+## 親要素の範囲を超えると外れる
+
+```
+┌─ セクション1（親） ──────────┐
+│ [sticky ヘッダー] ← 上端で貼り付く
+│  コンテンツ...
+│  コンテンツ...
+└──────────────────────────┘  ← ここで外れる
+┌─ セクション2（親） ──────────┐
+│ [sticky ヘッダー] ← 上端で再び貼り付く
+```
+
+fixed と違い **自分の親コンテナの範囲内だけ**で貼り付く
+
+---
+
+## sticky が効かない原因 TOP 3
+
+1. **`top` / `bottom` を指定していない**
+   → `position: sticky` だけでは動かない
+
+2. **祖先要素に `overflow: hidden / auto / scroll` がある**
+   → その要素がスクロールコンテナになり sticky が壊れる
+
+3. **親要素の高さが足りない**
+   → 貼り付く余地（親の高さ - sticky 要素の高さ）がない
+
+---
+
+## sticky のよくある使いどころ
+
+```css
+/* セクション見出し */
+.section-title { position: sticky; top: 0; }
+
+/* テーブルのヘッダー行・固定列 */
+thead th    { position: sticky; top: 0; }
+td:first-child { position: sticky; left: 0; }
+
+/* グローバルナビゲーション */
+.global-nav { position: sticky; top: 0; z-index: 100; }
+
+/* サイドバー目次 */
+.toc { position: sticky; top: 80px; /* ヘッダー高さ分ずらす */ }
+```
+
+---
+
+# ビューポート単位
+
+---
+
+## vw / vh — 基本
+
+- `1vw` = ビューポート幅の 1%
+- `1vh` = ビューポート高さの 1%
+
+```css
+.hero  { width: 100vw; height: 100vh; }
+.fluid { font-size: clamp(1rem, 2vw, 2rem); }
+```
+
+**問題：** スマートフォンの `100vh` はアドレスバーの表示・非表示で高さが変わり、意図しないはみ出しが起きる
+
+---
+
+## svh / lvh / dvh — 新しい高さ単位
+
+| 単位 | フルネーム | 基準 |
+|------|-----------|------|
+| `svh` | Small Viewport Height | アドレスバー**表示時**の高さ（最小） |
+| `lvh` | Large Viewport Height | アドレスバー**非表示時**の高さ（最大） |
+| `dvh` | Dynamic Viewport Height | アドレスバーの状態に**追従** |
+
+Chrome 108+ / Safari 15.4+ / Firefox 110+
+
+---
+
+## svh / dvh の使い分け
+
+```css
+/* ヒーロー・スプラッシュ → はみ出しNGなら svh */
+.hero { height: 100svh; }
+
+/* モーダル・オーバーレイ → 常に画面ぴったりなら dvh */
+.modal { height: 100dvh; }
+
+/* 幅方向（vw）はモバイルでも安定しているのでそのまま使える */
+.element { width: 50vw; }
+```
+
+`dvh` は再描画コストがあるため多用は避ける
+
+---
+
+# Flexbox
+
+---
+
+## display: flex — 基本
+
+```css
+.container {
+  display: flex;
+  gap: 8px; /* アイテム間のスペース */
+}
+```
+
+- 子要素が**横方向**に並ぶ（`flex-direction: row` がデフォルト）
+- 1次元のレイアウト（行 **or** 列）に最適
+
+---
+
+## 主軸 / 交差軸
+
+```
+flex-direction: row（デフォルト）
+┌────────────────────────────┐
+│ [A] → [B] → [C]           │  ← 主軸（justify-content）
+└────────────────────────────┘
+         ↕ 交差軸（align-items）
+```
+
+| プロパティ | 制御する軸 |
+|-----------|----------|
+| `justify-content` | 主軸方向の揃え |
+| `align-items` | 交差軸方向の揃え |
+
+---
+
+## justify-content
+
+```css
+.container {
+  justify-content: flex-start;    /* 始点寄せ（デフォルト） */
+  /* justify-content: center;      中央 */
+  /* justify-content: flex-end;    終点寄せ */
+  /* justify-content: space-between; 両端配置・間隔均等 */
+  /* justify-content: space-evenly;  全スペースを均等分割 */
+}
+```
+
+---
+
+## align-items / flex-wrap
+
+```css
+.container {
+  align-items: stretch;    /* 交差軸に引き伸ばす（デフォルト） */
+  /* align-items: center;   交差軸の中央 */
+  /* align-items: flex-start / flex-end / baseline */
+
+  flex-wrap: nowrap;  /* 1行に収める（デフォルト） */
+  /* flex-wrap: wrap;  はみ出したら折り返す */
+}
+```
+
+---
+
+## flex アイテムのサイズ制御
+
+```css
+/* flex: grow shrink basis の省略形 */
+.item { flex: 1; }           /* 均等分割（flex: 1 1 0%） */
+.item { flex: 0 0 200px; }   /* 固定幅 200px（伸縮なし） */
+.item { flex: 2; }           /* 他の flex:1 の2倍の幅 */
+```
+
+---
+
+## よく使う Flex パターン
+
+```css
+/* 完全中央揃え */
+.center { display: flex; justify-content: center; align-items: center; }
+
+/* ナビバー（ロゴ左・リンク右） */
+.navbar { display: flex; justify-content: space-between; align-items: center; }
+
+/* サイドバー + メイン */
+.layout  { display: flex; gap: 16px; }
+.sidebar { flex: 0 0 240px; } /* 固定幅 */
+.main    { flex: 1; }         /* 残り全部 */
+```
+
+---
+
+# CSS Grid
+
+---
+
+## Flex vs Grid — 使い分け
+
+| | Flexbox | Grid |
+|--|---------|------|
+| 次元 | **1次元**（行 or 列） | **2次元**（行 and 列） |
+| 向き | コンテンツ主導 | レイアウト主導 |
+| 向いている場面 | ナビ・ボタン列・カード内部 | ページ骨格・カードグリッド |
+
+---
+
+## grid-template-columns
+
+```css
+.grid { display: grid; gap: 16px; }
+
+/* 均等3列 */
+.grid { grid-template-columns: repeat(3, 1fr); }
+
+/* 固定サイドバー + 可変メイン */
+.layout { grid-template-columns: 240px 1fr; }
+
+/* レスポンシブ（メディアクエリ不要） */
+.cards  { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+```
+
+---
+
+## grid-template-areas — 名前で配置
+
+```css
+.page {
+  display: grid;
+  grid-template-areas:
+    "header  header"
+    "sidebar main"
+    "footer  footer";
+  grid-template-columns: 240px 1fr;
+}
+
+.header  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main    { grid-area: main; }
+.footer  { grid-area: footer; }
+```
+
+---
+
+## span — セルをまたぐ
+
+```css
+.wide { grid-column: span 3; } /* 3列をまたぐ */
+.tall { grid-row: span 2; }    /* 2行をまたぐ */
+
+/* 開始・終了ラインで指定する方法 */
+.item { grid-column: 1 / 3; }  /* 2列幅 */
+```
+
+---
+
+## subgrid — 親のトラックを子に継承
+
+カードグリッドで**ボタンの位置を横に揃えたい**問題を解決
+
+```css
+/* 親: 行トラックを定義 */
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto 1fr auto; /* タイトル・説明・フッター */
+}
+
+/* 子: span 3行 + subgrid で親トラックを引き継ぐ */
+.card {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid; /* ← これだけ */
+}
+```
+
+→ 説明文の長さに関わらず**ボタン行が横一線に揃う**
+
+Chrome 117+ / Firefox 71+ / Safari 16+
+
+---
+
+## Grid を使うべき判断
+
+- ✅ 行と列を**同時に**コントロールしたい
+- ✅ ページ全体の骨格（header / sidebar / main / footer）
+- ✅ 複数列カードを均等に並べたい
+- ✅ 要素を特定のセルに配置したい
+- → ナビ・カード内部・1方向の並びは **Flexbox** を使う
+
+---
+
+# Container Query
+
+---
+
+## @media vs @container
+
+| | メディアクエリ | コンテナクエリ |
+|--|-------------|------------|
+| 基準 | **ビューポート**のサイズ | **親コンテナ**のサイズ |
+| 適用単位 | ページ全体のブレイクポイント | コンポーネント単位 |
+| 再利用性 | 配置場所に依存する | どこに置いても自律的に変化 |
+
+Chrome 105+ / Safari 16+ / Firefox 110+
+
+---
+
+## 基本構文
+
+```css
+/* ① 親にコンテナを宣言 */
+.card-wrapper {
+  container-type: inline-size; /* 幅を基準にする */
+}
+
+/* ② コンテナサイズに応じてスタイルを変える */
+.card { flex-direction: column; } /* デフォルト: 縦積み */
+
+@container (min-width: 300px) {
+  .card { flex-direction: row; }  /* 300px 以上: 横並び */
+}
+```
+
+---
+
+## container-type の値
+
+| 値 | 基準 | 用途 |
+|----|------|------|
+| `inline-size` | 要素の**幅** | ほとんどのケース |
+| `size` | 幅と高さ両方 | 高さも基準にしたい場合 |
+
+---
+
+## cqw / cqh — コンテナ相対単位
+
+```css
+/* vw/vh のコンテナ版 */
+.title { font-size: 4cqw; } /* コンテナ幅の 4% */
+.half  { width: 50cqw; }    /* コンテナ幅の 50% */
+```
+
+---
+
+## Container Query を使うべき場面
+
+- ✅ 同じコンポーネントをサイドバーとメイン両方に置く
+- ✅ デザインシステム・UIライブラリのコンポーネント
+- ✅ 再利用可能なカード・ウィジェット
+- ✅ ページのブレイクポイントからコンポーネントを切り離したい
+- → ページ全体のレイアウト変更・ナビのハンバーガー切り替えは **@media** を使う
+
+---
+
+# まとめ
+
+---
+
+## レイアウト手法の選び方
+
+| やりたいこと | 使う手法 |
+|------------|---------|
+| 要素を横 / 縦に並べる | **Flexbox** |
+| 行と列の2次元レイアウト | **Grid** |
+| ページ全体の骨格 | **Grid** |
+| 画面サイズで切り替え | **@media** |
+| コンポーネントのサイズで切り替え | **@container** |
+| スクロールで貼り付く要素 | **sticky** |
+| 他の要素に影響しない重ね | **absolute** |
+
+---
+
+## height: % が効く条件
+
+`height: %` が有効になるのは、親の高さが**確定している**場合だけ
+
+| 親の状態 | height: % |
+|---------|----------|
+| `height: auto`（デフォルト） | ❌ 無視される |
+| `height: 200px`（明示指定） | ✅ 有効 |
+| `position: absolute`（top+bottom で確定） | ✅ 有効 |
+| `position: sticky / fixed` | ✅ 有効 |
 
 ---
 
@@ -281,4 +679,4 @@ React アプリで実際の振る舞いを確認：
 npm run dev
 ```
 
-ブラウザで各サンプルを触って動作を確認しよう！
+ブラウザで各ページを触って動作を確認しよう！
