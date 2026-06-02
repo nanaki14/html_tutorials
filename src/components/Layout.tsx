@@ -24,7 +24,7 @@ export function Layout() {
 			<header className="bg-indigo-700 text-white shadow-md">
 				<div className="px-4 py-4">
 					<h1 className="font-bold text-2xl">
-						HTML ブロック要素 &amp; インライン要素
+						HTML/CSS レイアウト チュートリアル
 					</h1>
 				</div>
 			</header>
