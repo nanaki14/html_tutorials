@@ -221,7 +221,7 @@ export function GridPage() {
 							price: "要お問い合わせ",
 						},
 					];
-					const cardStyle = (color: string) => ({
+					const cardStyle = (_color: string) => ({
 						background: "white",
 						border: "2px solid #e5e7eb",
 						borderRadius: "8px",
@@ -278,7 +278,6 @@ export function GridPage() {
 												...cardStyle(p.color),
 												display: "grid",
 												gridRow: "span 3",
-												// @ts-expect-error subgrid
 												gridTemplateRows: "subgrid",
 											}}
 										>

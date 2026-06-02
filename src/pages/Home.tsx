@@ -5,10 +5,11 @@ export function Home() {
 		<div className="space-y-6">
 			<div className="rounded-lg bg-white p-8 text-center shadow-sm">
 				<h2 className="mb-4 font-bold text-3xl text-gray-800">
-					ブロック要素とインライン要素を学ぼう
+					HTML/CSS のレイアウトを学ぼう
 				</h2>
 				<p className="mx-auto max-w-2xl text-gray-600">
-					HTMLの要素には大きく分けて「ブロック要素」と「インライン要素」があります。
+					ブロック・インラインの基本から、サイズ計算、position、Flexbox・Grid
+					といったレイアウト手法まで。
 					それぞれの振る舞いの違いを、インタラクティブなサンプルで確認しましょう。
 				</p>
 			</div>
